@@ -4,259 +4,247 @@ import {
   MoreVert,
   PlayCircle,
   Loader,
+  FavoriteBorder,
+  History,
+  ArrowForward,
 } from "@/components/Icons";
 import { useSurahs } from "@/hooks/useSurahs";
 import { Link } from "react-router-dom";
 import { useAudio } from "@/context/AudioContext";
 import { useMemo } from "react";
 
-export default function QuranPlayer() {
+export default function Home() {
   const { data: surahs, isLoading: isSurahsLoading } = useSurahs();
   const {
     playSurah,
     recentSurahs,
     currentSurah,
     isLoading: isAudioLoading,
+    loadingSurahNo,
   } = useAudio();
-  // console.log(surahs);
 
-  const randomIndex = useMemo(() => {
-    if (!surahs || surahs.length === 0) return 0;
-    return Math.floor(Math.random() * surahs.length);
-  }, [surahs?.length]);
-  const popularSurahs = surahs
-    ? [
-        surahs.find((s) => s.surahNo === 1),
-        surahs.find((s) => s.surahNo === 18),
-        surahs.find((s) => s.surahNo === 36),
-        surahs.find((s) => s.surahNo === 55),
-        surahs.find((s) => s.surahNo === 67),
-      ].filter(Boolean)
-    : [];
+  const featuredSurah = useMemo(() => {
+    if (!surahs || surahs.length === 0) return null;
+    return surahs[Math.floor(Math.random() * surahs.length)];
+  }, [surahs]);
 
-  const continueListening = recentSurahs.slice(0, 3);
+  const popularSurahs = useMemo(() => {
+    if (!surahs) return [];
+    // first 20 surahs
+    return surahs.slice(0, 20);
+  }, [surahs]);
+
+  const continueListening = recentSurahs.slice(0, 4);
+
+  if (isSurahsLoading) {
+    return (
+      <div className="space-y-12 animate-pulse">
+        <div className="h-[300px] md:h-[400px] w-full bg-surface-dark border border-border-muted"></div>
+        <div className="space-y-6">
+          <div className="h-6 w-48 bg-surface-dark"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="h-24 bg-surface-dark border border-border-muted"
+              ></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="relative w-full overflow-hidden mb-12 border border-border-muted">
-        <div
-          className="absolute inset-0 bg-cover bg-center grayscale opacity-40"
-          style={{
-            backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_79_xuG-2HtsXmoNDosZfhIyVLMWWNpR3Jg8pvFx2e_s04aLFjrz92LyePh2SBfGkZVrSbXmfG2Nrwi222c8jDEVRsjvFss-pjlulXxxFIbJcgGOulVV7TpTtOEDRAPWATsSPWjDo7SnnckhUBB0bKNuTzTIGcvjx9gILeeBGoq6Rh6n43Smtnl6s1L-8lf1yCPBcgZ0v-CjjIldf2eqhmDvJc63OgAEwbaFDJl5Um32dbE5F3zQDigT9g5wGNWTFGdfyjzxfbvaA')",
-          }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/90 to-transparent"></div>
-        <div className="relative p-10 md:p-14 flex flex-col items-start justify-center min-h-[400px]">
-          {isSurahsLoading ? (
-            <div className="w-full max-w-md animate-pulse">
-              <div className="h-4 w-32 bg-primary/20 mb-6"></div>
-              <div className="h-12 w-64 bg-white/10 mb-4"></div>
-              <div className="h-8 w-48 bg-white/5 mb-8"></div>
-              <div className="h-20 w-full bg-white/5 mb-10"></div>
-              <div className="flex gap-4">
-                <div className="h-12 w-32 bg-accent-gold/20"></div>
-                <div className="h-12 w-12 bg-white/10"></div>
+    <div className="space-y-12 pb-20">
+      {/* Hero Section / Featured Surah */}
+      {featuredSurah && (
+        <section>
+          <div className="bg-surface-dark border border-border-muted relative group overflow-hidden">
+            <div className="flex flex-col md:flex-row h-auto md:h-[400px]">
+              <div className="w-full md:w-1/2 relative overflow-hidden h-[250px] sm:h-[300px] md:h-auto bg-surface-darker flex items-center justify-center border-b md:border-b-0 md:border-r border-border-muted group/hero">
+                <div className="absolute inset-0 bg-islamic-pattern opacity-10 group-hover/hero:opacity-20 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-surface-dark via-transparent to-transparent z-10"></div>
+                <span className="font-arabic text-7xl sm:text-8xl md:text-9xl text-primary/40 group-hover/hero:text-accent-gold/50 transition-all duration-700 relative z-0 transform group-hover/hero:scale-110">
+                  {featuredSurah.surahNameArabic}
+                </span>
+              </div>
+              <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center relative z-10">
+                <span className="text-[10px] font-bold text-accent-gold uppercase tracking-[0.3em] mb-4 block">
+                  Featured Selection
+                </span>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4 italic leading-tight">
+                  {featuredSurah.surahName}
+                </h2>
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="text-xs text-primary font-bold uppercase tracking-widest border-r border-border-muted pr-4">
+                    Surah No • {featuredSurah.surahNo}
+                  </span>
+                  <span className="text-xs text-primary font-bold uppercase tracking-widest">
+                    {featuredSurah.totalAyah} Ayahs
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() =>
+                      playSurah(
+                        featuredSurah.surahNo,
+                        featuredSurah.surahName,
+                        featuredSurah.surahNameArabic,
+                      )
+                    }
+                    disabled={
+                      isAudioLoading &&
+                      (loadingSurahNo === featuredSurah.surahNo ||
+                        (!loadingSurahNo &&
+                          currentSurah?.surahNo === featuredSurah.surahNo))
+                    }
+                    className="flex-1 md:flex-none px-6 md:px-8 py-3 bg-accent-gold text-background-dark font-black uppercase tracking-widest hover:bg-white transition-all flex items-center justify-center gap-2 group/btn disabled:opacity-70"
+                  >
+                    {isAudioLoading &&
+                    (loadingSurahNo === featuredSurah.surahNo ||
+                      (!loadingSurahNo &&
+                        currentSurah?.surahNo === featuredSurah.surahNo)) ? (
+                      <Loader className="animate-spin text-xl" />
+                    ) : (
+                      <PlayArrow className="text-xl" />
+                    )}
+                    Listen Now
+                  </button>
+                  <button className="w-12 h-12 border border-border-muted flex items-center justify-center text-white hover:bg-white hover:text-background-dark transition-all shrink-0">
+                    <FavoriteBorder />
+                  </button>
+                </div>
               </div>
             </div>
-          ) : (
-            <>
-              <span className="px-2 py-1 bg-primary text-white text-[10px] font-bold tracking-[0.2em] uppercase mb-6">
-                Featured Recitation
-              </span>
-              <h1 className="text-5xl font-bold text-white mb-3 tracking-tighter">
-                {surahs![randomIndex].surahName}
-              </h1>
-              <h2 className="text-2xl text-accent-gold/80 mb-8 font-light italic">
-                {surahs![randomIndex].surahNameTranslation}{" "}
-                <span className="font-arabic not-italic text-2xl ml-4">
-                  {surahs![randomIndex].surahNameArabic}
-                </span>
-              </h2>
-              <p className="max-w-lg text-slate-400 text-sm mb-10 leading-relaxed font-light">
-                Immerse yourself in the tranquility of the Holy Quran. A
-                recitation known for its soothing rhythm and profound reminders
-                of Allah's blessings.
-              </p>
-              <div className="flex items-center gap-4">
+          </div>
+        </section>
+      )}
+
+      {/* Continue Listening Section (Recent Surahs) */}
+      {continueListening.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-sm md:text-lg font-bold text-white uppercase tracking-widest">
+              Continue Listening
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {continueListening.map((item) => (
+              <div
+                key={item.surahNo}
+                className="bg-surface-dark p-4 md:p-5 border border-border-muted group hover:border-accent-gold transition-all relative overflow-hidden"
+              >
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/20 flex items-center justify-center border border-primary/20 shrink-0">
+                    <History className="text-accent-gold" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider truncate">
+                      {item.surahName}
+                    </h4>
+                    <p className="text-[10px] text-primary font-bold uppercase tracking-tighter truncate mt-1">
+                      {item.reciter}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      playSurah(
+                        item.surahNo,
+                        item.surahName,
+                        item.surahNameArabic,
+                      )
+                    }
+                    disabled={
+                      isAudioLoading &&
+                      (loadingSurahNo === item.surahNo ||
+                        (!loadingSurahNo &&
+                          currentSurah?.surahNo === item.surahNo))
+                    }
+                    className="w-8 h-8 rounded-full bg-accent-gold text-background-dark flex items-center justify-center opacity-100 md:opacity-0 group-hover:opacity-100 transition-all hover:bg-white disabled:opacity-70 shrink-0"
+                  >
+                    {isAudioLoading &&
+                    (loadingSurahNo === item.surahNo ||
+                      (!loadingSurahNo &&
+                        currentSurah?.surahNo === item.surahNo)) ? (
+                      <Loader className="animate-spin text-sm" />
+                    ) : (
+                      <PlayArrow className="text-sm" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular Surahs Section */}
+      <section>
+        <div className="flex items-center justify-between mb-8">
+          <h3 className="text-sm md:text-lg font-bold text-white uppercase tracking-[0.2em]">
+            Popular Highlights
+          </h3>
+          <Link
+            to="/surahs"
+            className="text-[10px] font-bold text-accent-gold uppercase tracking-widest hover:text-white transition-all flex items-center gap-2"
+          >
+            Explore All <ArrowForward style={{ fontSize: 14 }} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {popularSurahs.map((surah) => (
+            <div
+              key={surah.surahNo}
+              className="bg-surface-dark border border-border-muted p-4 md:p-6 hover:border-accent-gold transition-all group flex flex-col h-full relative"
+            >
+              <div className="absolute top-4 right-4 text-[10px] font-bold text-primary opacity-30 group-hover:opacity-100 transition-opacity">
+                {surah.surahNo.toString().padStart(3, "0")}
+              </div>
+              <div className="mb-6">
+                <Link to={`/surahs/${surah.surahNo}`}>
+                  <h4 className="text-sm font-black text-white uppercase tracking-wider mb-1 hover:text-accent-gold transition-colors">
+                    {surah.surahName}
+                  </h4>
+                </Link>
+                <p className="text-[10px] text-primary font-bold uppercase tracking-widest">
+                  {surah.totalAyah} Ayahs
+                </p>
+              </div>
+              <div className="mt-auto flex items-center justify-between pt-4 border-t border-border-muted/50">
+                <div className="text-lg md:text-xl font-arabic text-primary/80">
+                  {surah.surahNameArabic}
+                </div>
                 <button
-                  className="flex items-center gap-3 bg-accent-gold text-background-dark px-8 py-3 font-bold uppercase text-xs tracking-widest hover:bg-white transition-all disabled:opacity-70"
-                  disabled={isAudioLoading}
                   onClick={() =>
-                    surahs &&
                     playSurah(
-                      surahs[randomIndex].surahNo,
-                      surahs[randomIndex].surahName,
+                      surah.surahNo,
+                      surah.surahName,
+                      surah.surahNameArabic,
                     )
                   }
+                  disabled={
+                    isAudioLoading &&
+                    (loadingSurahNo === surah.surahNo ||
+                      (!loadingSurahNo &&
+                        currentSurah?.surahNo === surah.surahNo))
+                  }
+                  className="w-10 h-10 bg-surface-darker border border-border-muted flex items-center justify-center text-white group-hover:bg-accent-gold group-hover:text-background-dark group-hover:border-accent-gold transition-all disabled:opacity-70"
                 >
                   {isAudioLoading &&
-                  currentSurah?.surahNo === surahs![randomIndex].surahNo ? (
-                    <Loader className="animate-spin" style={{ fontSize: 20 }} />
+                  (loadingSurahNo === surah.surahNo ||
+                    (!loadingSurahNo &&
+                      currentSurah?.surahNo === surah.surahNo)) ? (
+                    <Loader className="animate-spin" />
                   ) : (
-                    <PlayArrow style={{ fontSize: 20 }} />
+                    <PlayArrow />
                   )}
-                  <span>Listen Now</span>
-                </button>
-                <button className="flex items-center justify-center w-12 h-12 border border-border-muted text-white hover:bg-surface-dark transition-colors bg-background-dark">
-                  <Favorite />
                 </button>
               </div>
-            </>
-          )}
+            </div>
+          ))}
         </div>
-      </div>
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-8 border-b border-border-muted pb-4">
-          <h2 className="text-sm font-bold text-white uppercase tracking-[0.3em] flex items-center gap-3">
-            <span className="w-2 h-2 bg-accent-gold"></span>
-            Continue Listening
-          </h2>
-          <a
-            className="text-[10px] font-bold text-primary hover:text-accent-gold uppercase tracking-widest transition-colors"
-            href="#"
-          >
-            View All
-          </a>
-        </div>
-        {isSurahsLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="p-6 flex items-center gap-5 border border-border-muted bg-surface-darker animate-pulse"
-              >
-                <div className="w-16 h-16 bg-white/5 border border-border-muted"></div>
-                <div className="flex-1 space-y-3">
-                  <div className="h-4 w-24 bg-white/10"></div>
-                  <div className="h-3 w-16 bg-white/5"></div>
-                  <div className="h-[1px] w-full bg-border-muted mt-3"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-            {continueListening.map((surah: any, idx: number) => (
-              <Link
-                key={surah.surahNo}
-                to={`/surahs/${surah.surahNo}`}
-                className={`p-6 flex items-center gap-5 border cursor-pointer transition-all ${idx === 0 ? "bg-surface-dark border-primary/30 group" : "bg-surface-darker border-border-muted hover:bg-surface-dark group"}`}
-              >
-                <div className="relative w-16 h-16 border border-border-muted flex-shrink-0 bg-surface-dark text-white font-arabic text-2xl flex items-center justify-center">
-                  <div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-accent-gold/10 z-10"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      playSurah(surah.surahNo, surah.surahName);
-                    }}
-                  >
-                    {isAudioLoading &&
-                    currentSurah?.surahNo === surah.surahNo ? (
-                      <Loader
-                        className="animate-spin text-accent-gold"
-                        style={{ fontSize: 24 }}
-                      />
-                    ) : (
-                      <PlayArrow
-                        className={
-                          idx === 0 ? "text-white" : "text-accent-gold"
-                        }
-                      />
-                    )}
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity">
-                    {surah.surahNo}
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-white text-sm font-bold uppercase tracking-tight truncate">
-                    {surah.surahName}
-                  </h3>
-                  <p className="text-primary text-[10px] font-bold uppercase tracking-wider truncate">
-                    {surah.surahNameTranslation}
-                  </p>
-                  <div className="mt-3 w-full h-[1px] bg-border-muted">
-                    <div
-                      className={`h-full ${idx === 0 ? "bg-accent-gold w-[45%]" : "bg-primary w-[10%]"}`}
-                    ></div>
-                  </div>
-                </div>
-                {idx === 0 && (
-                  <button className="text-primary hover:text-white transition-colors">
-                    <MoreVert className="text-xl" />
-                  </button>
-                )}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-      <div>
-        <div className="flex items-center justify-between mb-8 border-b border-border-muted pb-4">
-          <h2 className="text-sm font-bold text-white uppercase tracking-[0.3em] flex items-center gap-3">
-            <span className="w-2 h-2 bg-primary"></span>
-            Popular Surahs
-          </h2>
-        </div>
-        {isSurahsLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-border-muted border border-border-muted">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="bg-surface-dark p-8 animate-pulse flex flex-col items-center"
-              >
-                <div className="w-full aspect-square bg-surface-darker border border-border-muted mb-6"></div>
-                <div className="h-4 w-20 bg-white/10 mb-2"></div>
-                <div className="h-3 w-16 bg-white/5"></div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-border-muted border border-border-muted">
-            {popularSurahs.map((surah: any) => (
-              <Link
-                key={surah.surahNo}
-                to={`/surahs/${surah.surahNo}`}
-                className="group bg-surface-dark hover:bg-surface-darker p-8 transition-all cursor-pointer block"
-              >
-                <div className="relative aspect-square mb-6 bg-surface-darker border border-border-muted">
-                  <div className="absolute inset-0 flex items-center justify-center text-3xl font-arabic text-primary text-center px-4 leading-relaxed group-hover:scale-110 transition-transform duration-700">
-                    {surah.surahNameArabic}
-                  </div>
-                  <div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-accent-gold/5 z-10"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      playSurah(surah.surahNo, surah.surahName);
-                    }}
-                  >
-                    {isAudioLoading &&
-                    currentSurah?.surahNo === surah.surahNo ? (
-                      <Loader
-                        className="animate-spin text-accent-gold"
-                        style={{ fontSize: 32 }}
-                      />
-                    ) : (
-                      <PlayCircle
-                        className="text-accent-gold"
-                        style={{ fontSize: 40 }}
-                      />
-                    )}
-                  </div>
-                </div>
-                <h3 className="text-white font-bold text-xs uppercase tracking-widest truncate">
-                  {surah.surahName}
-                </h3>
-                <p className="text-[10px] text-primary uppercase font-medium">
-                  {surah.surahNameTranslation}
-                </p>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="h-24"></div>
-    </>
+      </section>
+    </div>
   );
 }

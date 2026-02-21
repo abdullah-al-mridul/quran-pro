@@ -9,6 +9,7 @@ import React, {
 interface CurrentSurah {
   surahNo: number;
   surahName: string;
+  surahNameArabic: string;
   reciter: string;
 }
 
@@ -16,6 +17,7 @@ interface AudioContextType {
   currentSurah: CurrentSurah | null;
   isPlaying: boolean;
   isLoading: boolean;
+  loadingSurahNo: number | null;
   progress: number;
   currentTime: number;
   duration: number;
@@ -26,7 +28,11 @@ interface AudioContextType {
   availableReciters: { id: string; name: string }[];
   setReciter: (id: string) => void;
   toggleMaximize: () => void;
-  playSurah: (surahNo: number, surahName: string) => Promise<void>;
+  playSurah: (
+    surahNo: number,
+    surahName: string,
+    surahNameArabic: string,
+  ) => Promise<void>;
   togglePlay: () => void;
   seek: (percent: number) => void;
   setVolume: (vol: number) => void;
@@ -51,6 +57,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentSurah, setCurrentSurah] = useState<CurrentSurah | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingSurahNo, setLoadingSurahNo] = useState<number | null>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -74,7 +81,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem(RECITER_KEY, selectedReciterId);
     // If we're already playing something, restart it with the new reciter
     if (currentSurah && isPlaying) {
-      playSurah(currentSurah.surahNo, currentSurah.surahName);
+      playSurah(
+        currentSurah.surahNo,
+        currentSurah.surahName,
+        currentSurah.surahNameArabic,
+      );
     }
   }, [selectedReciterId]);
 
@@ -129,8 +140,13 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [volume]);
 
-  const playSurah = async (surahNo: number, surahName: string) => {
+  const playSurah = async (
+    surahNo: number,
+    surahName: string,
+    surahNameArabic: string,
+  ) => {
     try {
+      setLoadingSurahNo(surahNo);
       setIsLoading(true);
       const response = await fetch(
         `https://quranapi.pages.dev/api/audio/${surahNo}.json`,
@@ -145,6 +161,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         const newSurah = {
           surahNo,
           surahName,
+          surahNameArabic,
           reciter: audioInfo.reciter,
         };
 
@@ -162,6 +179,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Failed to play audio:", error);
     } finally {
       setIsLoading(false);
+      setLoadingSurahNo(null);
     }
   };
 
@@ -195,6 +213,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         currentSurah,
         isPlaying,
         isLoading,
+        loadingSurahNo,
         progress,
         currentTime,
         duration,

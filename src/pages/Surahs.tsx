@@ -5,7 +5,12 @@ import { useAudio } from "@/context/AudioContext";
 
 export default function SurahsPage() {
   const { data: surahs, isLoading, error } = useSurahs();
-  const { playSurah, currentSurah, isLoading: isAudioLoading } = useAudio();
+  const {
+    playSurah,
+    currentSurah,
+    isLoading: isAudioLoading,
+    loadingSurahNo,
+  } = useAudio();
 
   return (
     <>
@@ -57,8 +62,9 @@ export default function SurahsPage() {
       )}
 
       {!isLoading && !error && surahs && (
-        <div className="bg-surface-darker border border-border-muted overflow-x-auto">
-          <table className="w-full text-sm text-left text-slate-400">
+        <div className="bg-surface-darker border border-border-muted overflow-hidden">
+          {/* Desktop Table View */}
+          <table className="hidden lg:table w-full text-sm text-left text-slate-400">
             <thead className="text-xs text-primary uppercase bg-surface-dark border-b border-border-muted">
               <tr>
                 <th scope="col" className="p-4 w-16 text-center">
@@ -70,10 +76,10 @@ export default function SurahsPage() {
                 <th scope="col" className="p-4">
                   Translation
                 </th>
-                <th scope="col" className="p-4 hidden sm:table-cell">
+                <th scope="col" className="p-4">
                   Ayahs
                 </th>
-                <th scope="col" className="p-4 hidden md:table-cell">
+                <th scope="col" className="p-4">
                   Revelation
                 </th>
                 <th scope="col" className="p-4"></th>
@@ -104,19 +110,23 @@ export default function SurahsPage() {
                     </Link>
                   </td>
                   <td className="p-4">{surah.surahNameTranslation}</td>
-                  <td className="p-4 hidden sm:table-cell">
-                    {surah.totalAyah}
-                  </td>
-                  <td className="p-4 hidden md:table-cell">
-                    {surah.revelationPlace}
-                  </td>
+                  <td className="p-4">{surah.totalAyah}</td>
+                  <td className="p-4">{surah.revelationPlace}</td>
                   <td className="p-4 text-right">
                     <button
                       className="text-primary group-hover:text-accent-gold transition-colors opacity-0 group-hover:opacity-100"
-                      onClick={() => playSurah(surah.surahNo, surah.surahName)}
+                      onClick={() =>
+                        playSurah(
+                          surah.surahNo,
+                          surah.surahName,
+                          surah.surahNameArabic,
+                        )
+                      }
                     >
                       {isAudioLoading &&
-                      currentSurah?.surahNo === surah.surahNo ? (
+                      (loadingSurahNo === surah.surahNo ||
+                        (!loadingSurahNo &&
+                          currentSurah?.surahNo === surah.surahNo)) ? (
                         <Loader
                           className="animate-spin text-accent-gold"
                           style={{ fontSize: 24 }}
@@ -130,6 +140,60 @@ export default function SurahsPage() {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile Card View */}
+          <div className="lg:hidden grid grid-cols-1 gap-px bg-border-muted">
+            {surahs.map((surah) => (
+              <div
+                key={surah.surahNo}
+                className="bg-surface-dark p-4 flex items-center justify-between group"
+              >
+                <Link
+                  to={`/surahs/${surah.surahNo}`}
+                  className="flex items-center gap-4 flex-1 min-w-0"
+                >
+                  <div className="w-10 h-10 flex items-center justify-center bg-surface-darker text-accent-gold font-mono text-xs border border-border-muted shrink-0">
+                    {surah.surahNo}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-bold truncate">
+                        {surah.surahName}
+                      </h4>
+                      <span className="font-arabic text-primary">
+                        {surah.surahNameArabic}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-primary uppercase tracking-widest truncate">
+                      {surah.surahNameTranslation}
+                    </p>
+                  </div>
+                </Link>
+                <button
+                  className="ml-4 p-2 text-primary hover:text-accent-gold transition-colors"
+                  onClick={() =>
+                    playSurah(
+                      surah.surahNo,
+                      surah.surahName,
+                      surah.surahNameArabic,
+                    )
+                  }
+                >
+                  {isAudioLoading &&
+                  (loadingSurahNo === surah.surahNo ||
+                    (!loadingSurahNo &&
+                      currentSurah?.surahNo === surah.surahNo)) ? (
+                    <Loader
+                      className="animate-spin text-accent-gold"
+                      style={{ fontSize: 24 }}
+                    />
+                  ) : (
+                    <PlayCircle style={{ fontSize: 24 }} />
+                  )}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </>

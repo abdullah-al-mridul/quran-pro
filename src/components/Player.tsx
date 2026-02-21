@@ -1,6 +1,5 @@
 import {
   VolumeUp,
-  // QueueMusic,
   OpenInFull,
   FavoriteBorder,
   Shuffle,
@@ -65,83 +64,71 @@ export default function Player() {
     <>
       {/* Mini Player Bar */}
       <footer
-        className={`h-24 bg-surface-darker border-t border-border-muted flex items-center justify-between px-10 z-30 w-full fixed bottom-0 left-0 transition-transform duration-500 ease-in-out ${
+        className={`h-20 md:h-24 bg-surface-darker border-t border-border-muted flex items-center justify-between px-4 md:px-10 z-30 w-full fixed bottom-0 left-0 transition-transform duration-500 ease-in-out ${
           isMaximized ? "translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="flex items-center gap-5 w-1/4">
-          <div className="w-12 h-12 border border-border-muted relative group overflow-hidden">
-            <img
-              alt="Cover"
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV9YrGpnUyTmen5rB8hlVf0wsi50zOUR8EA7F_LYUpbk3fhwd2MipkXu9DWmgNIkbn_Znf99xA4IVQPY9PxBwfQhB8m5YkRINQaTELIRuqIIwJv1JerORO-dJrD_g5jQU1KEbZ7wsLQYpfTqAyroqdPbr_h3vFt494RbVogWONS98rbuhpiObD-TwbfHrGInfI7Agn0AL887M7e0qwfh35nTsgA4d-761J25iYGdNSFjK8s4mWNdu5F4KEA-_OX5vwqHfBPnxOgx_7"
-              width={48}
-              height={48}
-            />
-            <div
-              className="absolute inset-0 bg-background-dark/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-              onClick={toggleMaximize}
-            >
-              <OpenInFull className="text-white text-sm" />
-            </div>
+        <div className="flex items-center gap-3 md:gap-5 w-1/3 md:w-1/4">
+          <div
+            className="w-10 h-10 md:w-12 md:h-12 bg-surface-dark border border-border-muted relative group overflow-hidden shrink-0 flex items-center justify-center cursor-pointer hover:border-accent-gold transition-all"
+            onClick={toggleMaximize}
+          >
+            <span className="font-arabic text-primary text-sm transition-colors group-hover:text-accent-gold">
+              {currentSurah.surahNameArabic}
+            </span>
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-3">
-              <h4 className="text-white font-bold text-xs uppercase tracking-wider">
-                {currentSurah.surahName}
-              </h4>
-            </div>
-            <p className="text-[10px] text-primary font-bold uppercase tracking-tight">
+          <div className="flex flex-col min-w-0">
+            <h4 className="text-white font-bold text-[10px] md:text-xs uppercase tracking-wider truncate">
+              {currentSurah.surahName}
+            </h4>
+            <p className="text-[8px] md:text-[10px] text-primary font-bold uppercase tracking-tight truncate">
               {currentSurah.reciter}
             </p>
           </div>
-          <button className="text-primary hover:text-accent-gold ml-2 transition-colors">
-            <FavoriteBorder className="text-lg" />
-          </button>
         </div>
-        <div className="flex flex-col items-center justify-center w-2/4">
-          <div className="flex items-center gap-8 mb-2">
+        <div className="flex flex-col items-center justify-center flex-1 md:w-2/4 px-4 overflow-hidden">
+          <div className="flex items-center gap-4 md:gap-8 mb-1 md:mb-2">
             <button
-              className="text-primary hover:text-white transition-colors"
+              className="hidden md:block text-primary hover:text-white transition-colors"
               title="Shuffle"
             >
               <Shuffle className="text-lg" />
             </button>
             <button
-              className="text-white hover:text-accent-gold transition-colors"
+              className="hidden sm:block text-white hover:text-accent-gold transition-colors"
               title="Previous"
             >
-              <SkipPrevious className="text-2xl" />
+              <SkipPrevious className="text-xl md:text-2xl" />
             </button>
             <button
-              className="w-12 h-12 bg-accent-gold text-background-dark flex items-center justify-center hover:bg-white transition-all disabled:opacity-70"
+              className="w-10 h-10 md:w-12 md:h-12 bg-accent-gold text-background-dark flex items-center justify-center hover:bg-white transition-all disabled:opacity-70"
               title={isPlaying ? "Pause" : "Play"}
               onClick={togglePlay}
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader className="text-2xl animate-spin" />
+                <Loader className="text-xl md:text-2xl animate-spin" />
               ) : isPlaying ? (
-                <Pause className="text-2xl" />
+                <Pause className="text-xl md:text-2xl" />
               ) : (
-                <PlayArrow className="text-2xl" />
+                <PlayArrow className="text-xl md:text-2xl" />
               )}
             </button>
             <button
-              className="text-white hover:text-accent-gold transition-colors"
+              className="hidden sm:block text-white hover:text-accent-gold transition-colors"
               title="Next"
             >
-              <SkipNext className="text-2xl" />
+              <SkipNext className="text-xl md:text-2xl" />
             </button>
             <button
-              className="text-primary hover:text-white transition-colors"
+              className="hidden md:block text-primary hover:text-white transition-colors"
               title="Repeat"
             >
               <Repeat className="text-lg" />
             </button>
           </div>
-          <div className="flex items-center gap-4 w-full max-w-lg">
-            <span className="text-[9px] font-mono text-primary tracking-widest uppercase">
+          <div className="flex items-center gap-3 md:gap-4 w-full max-w-lg">
+            <span className="hidden sm:block text-[8px] md:text-[9px] font-mono text-primary tracking-widest uppercase">
               {formatTime(currentTime)}
             </span>
             <div
@@ -152,25 +139,21 @@ export default function Player() {
                 className="absolute left-0 top-0 h-full bg-accent-gold z-10"
                 style={{ width: `${progress}%` }}
               ></div>
-              <div
-                className="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-white z-20"
-                style={{ left: `${progress}%` }}
-              ></div>
             </div>
-            <span className="text-[9px] font-mono text-primary tracking-widest uppercase">
+            <span className="hidden sm:block text-[8px] md:text-[9px] font-mono text-primary tracking-widest uppercase">
               {formatTime(duration)}
             </span>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-6 w-1/4">
+        <div className="flex items-center justify-end gap-2 md:gap-6 w-1/4">
           <button
             className="text-primary hover:text-white transition-colors p-2"
             onClick={toggleMaximize}
             title="Maximize"
           >
-            <ExpandLess className="text-2xl" />
+            <ExpandLess className="text-xl md:text-2xl" />
           </button>
-          <div className="relative">
+          <div className="relative hidden md:block">
             <button
               className={`text-primary hover:text-white transition-colors p-2 ${showReciters ? "text-accent-gold" : ""}`}
               title="Choose Reciter"
@@ -203,9 +186,6 @@ export default function Player() {
               </div>
             )}
           </div>
-          {/* <button className="text-primary hover:text-white transition-colors">
-            <QueueMusic />
-          </button> */}
         </div>
       </footer>
 
@@ -218,50 +198,47 @@ export default function Player() {
         }`}
       >
         {/* Background Blur */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV9YrGpnUyTmen5rB8hlVf0wsi50zOUR8EA7F_LYUpbk3fhwd2MipkXu9DWmgNIkbn_Znf99xA4IVQPY9PxBwfQhB8m5YkRINQaTELIRuqIIwJv1JerORO-dJrD_g5jQU1KEbZ7wsLQYpfTqBwfQhB8m5YkRINQaTELIRuqIIwJv1JerORO-dJrD_g5jQU1KEbZ7wsLQYpfTqAyroqdPbr_h3vFt494RbVogWONS98rbuhpiObD-TwbfHrGInfI7Agn0AL887M7e0qwfh35nTsgA4d-761J25iYGdNSFjK8s4mWNdu5F4KEA-_OX5vwqHfBPnxOgx_7"
-            className="w-full h-full object-cover blur-3xl opacity-20"
-            alt="Blur"
-          />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-background-dark via-surface-dark to-background-dark">
+          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
+            <span className="font-arabic text-[40vw] leading-none whitespace-nowrap">
+              {currentSurah.surahNameArabic}
+            </span>
+          </div>
         </div>
 
         {/* Top bar */}
-        <div className="relative z-10 h-24 flex items-center justify-between px-10">
+        <div className="relative z-10 h-20 md:h-24 flex items-center justify-between px-6 md:px-10">
           <button
             className="text-white hover:text-accent-gold transition-colors"
             onClick={toggleMaximize}
           >
-            <ExpandMore className="text-4xl" />
+            <ExpandMore className="text-3xl md:text-4xl" />
           </button>
           <div className="text-center">
-            <span className="text-[10px] font-bold text-primary uppercase tracking-[0.3em]">
+            <span className="text-[8px] md:text-[10px] font-bold text-primary uppercase tracking-[0.3em]">
               Now Playing
             </span>
-            <h3 className="text-white font-bold uppercase tracking-widest text-sm mt-1">
+            <h3 className="text-white font-bold uppercase tracking-widest text-xs md:text-sm mt-1">
               Quran Pro
             </h3>
           </div>
-          {/* <button className="text-white hover:text-accent-gold transition-colors">
-            <QueueMusic className="text-2xl" />
-          </button> */}
+          <div className="w-8 md:w-10"></div> {/* Spacer */}
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-10 max-w-4xl mx-auto w-full">
-          <div className="w-full aspect-square max-w-[400px] border border-border-muted overflow-hidden shadow-2xl mb-12">
-            <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV9YrGpnUyTmen5rB8hlVf0wsi50zOUR8EA7F_LYUpbk3fhwd2MipkXu9DWmgNIkbn_Znf99xA4IVQPY9PxBwfQhB8m5YkRINQaTELIRuqIIwJv1JerORO-dJrD_g5jQU1KEbZ7wsLQYpfTqAyroqdPbr_h3vFt494RbVogWONS98rbuhpiObD-TwbfHrGInfI7Agn0AL887M7e0qwfh35nTsgA4d-761J25iYGdNSFjK8s4mWNdu5F4KEA-_OX5vwqHfBPnxOgx_7"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-              alt="Maximized Cover"
-            />
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 md:px-10 max-w-4xl mx-auto w-full">
+          <div className="w-full aspect-square max-w-[280px] sm:max-w-[320px] md:max-w-[400px] border border-border-muted overflow-hidden shadow-2xl mb-8 md:mb-12 bg-surface-darker flex items-center justify-center relative group">
+            <div className="absolute inset-0 bg-islamic-pattern opacity-10 group-hover:opacity-20 transition-opacity"></div>
+            <span className="font-arabic text-6xl sm:text-7xl md:text-8xl text-primary/80 group-hover:text-accent-gold transition-colors relative z-10">
+              {currentSurah.surahNameArabic}
+            </span>
           </div>
 
-          <div className="w-full text-center mb-10">
-            <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">
+          <div className="w-full text-center mb-6 md:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">
               {currentSurah.surahName}
             </h2>
-            <p className="text-accent-gold font-bold uppercase tracking-widest text-sm">
+            <p className="text-accent-gold font-bold uppercase tracking-widest text-[10px] md:text-sm">
               {currentSurah.reciter}
             </p>
           </div>
@@ -292,37 +269,37 @@ export default function Player() {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center gap-12">
-            <button className="text-primary hover:text-white transition-colors">
-              <Shuffle className="text-2xl" />
+          <div className="flex items-center gap-6 sm:gap-12">
+            <button className="hidden sm:block text-primary hover:text-white transition-colors">
+              <Shuffle className="text-xl md:text-2xl" />
             </button>
             <button className="text-white hover:text-accent-gold transition-colors">
-              <SkipPrevious className="text-4xl" />
+              <SkipPrevious className="text-3xl md:text-4xl" />
             </button>
             <button
-              className="w-24 h-24 rounded-full bg-accent-gold text-background-dark flex items-center justify-center hover:bg-white transition-all shadow-xl disabled:opacity-70"
+              className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-accent-gold text-background-dark flex items-center justify-center hover:bg-white transition-all shadow-xl disabled:opacity-70"
               onClick={togglePlay}
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader className="text-4xl animate-spin" />
+                <Loader className="text-2xl md:text-4xl animate-spin" />
               ) : isPlaying ? (
-                <Pause className="text-4xl" />
+                <Pause className="text-2xl md:text-4xl" />
               ) : (
-                <PlayArrow className="text-4xl" />
+                <PlayArrow className="text-2xl md:text-4xl" />
               )}
             </button>
             <button className="text-white hover:text-accent-gold transition-colors">
-              <SkipNext className="text-4xl" />
+              <SkipNext className="text-3xl md:text-4xl" />
             </button>
-            <button className="text-primary hover:text-white transition-colors">
-              <Repeat className="text-2xl" />
+            <button className="hidden sm:block text-primary hover:text-white transition-colors">
+              <Repeat className="text-xl md:text-2xl" />
             </button>
           </div>
         </div>
 
         {/* Bottom Actions */}
-        <div className="relative z-10 h-32 flex items-center justify-between px-10 max-w-4xl mx-auto w-full">
+        <div className="relative z-10 h-24 md:h-32 flex items-center justify-between px-6 md:px-10 max-w-4xl mx-auto w-full">
           <div className="flex items-center gap-6 relative">
             <button
               className={`text-primary hover:text-white transition-colors flex items-center gap-2 ${showReciters ? "text-accent-gold" : ""}`}
@@ -340,29 +317,31 @@ export default function Player() {
                     Choose Reciter
                   </span>
                 </div>
-                {availableReciters.map((reciter) => (
-                  <button
-                    key={reciter.id}
-                    className={`w-full text-left px-4 py-3 text-xs flex items-center justify-between hover:bg-surface-darker transition-colors ${selectedReciterId === reciter.id ? "text-accent-gold" : "text-white"}`}
-                    onClick={() => {
-                      setReciter(reciter.id);
-                      setShowReciters(false);
-                    }}
-                  >
-                    <span>{reciter.name}</span>
-                    {selectedReciterId === reciter.id && (
-                      <div className="w-1.5 h-1.5 bg-accent-gold rounded-full"></div>
-                    )}
-                  </button>
-                ))}
+                <div className="max-h-[30vh] overflow-y-auto">
+                  {availableReciters.map((reciter) => (
+                    <button
+                      key={reciter.id}
+                      className={`w-full text-left px-4 py-3 text-xs flex items-center justify-between hover:bg-surface-darker transition-colors ${selectedReciterId === reciter.id ? "text-accent-gold" : "text-white"}`}
+                      onClick={() => {
+                        setReciter(reciter.id);
+                        setShowReciters(false);
+                      }}
+                    >
+                      <span>{reciter.name}</span>
+                      {selectedReciterId === reciter.id && (
+                        <div className="w-1.5 h-1.5 bg-accent-gold rounded-full"></div>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-4">
             <VolumeUp className="text-primary text-xl" />
             <div
-              className="relative w-32 h-[2px] bg-border-muted cursor-pointer"
+              className="relative w-24 md:w-32 h-[2px] bg-border-muted cursor-pointer"
               onClick={handleVolumeClick}
             >
               <div
