@@ -18,7 +18,10 @@ export interface SurahDetails {
   ayahs: Ayah[];
 }
 
-const fetchSurahDetails = async (surahNo: number): Promise<SurahDetails> => {
+const fetchSurahDetails = async (
+  surahNo: number,
+  language: string,
+): Promise<SurahDetails> => {
   const response = await fetch(
     `https://quranapi.pages.dev/api/${surahNo}.json`,
   );
@@ -32,7 +35,7 @@ const fetchSurahDetails = async (surahNo: number): Promise<SurahDetails> => {
     (arabicText: string, index: number) => ({
       number: index + 1,
       text: arabicText,
-      translation: result.english[index],
+      translation: result[language]?.[index] || result.english[index],
     }),
   );
 
@@ -49,10 +52,13 @@ const fetchSurahDetails = async (surahNo: number): Promise<SurahDetails> => {
   };
 };
 
-export const useSurahDetails = (surahNo: number) => {
+export const useSurahDetails = (
+  surahNo: number,
+  language: string = "english",
+) => {
   return useQuery({
-    queryKey: ["surah", surahNo],
-    queryFn: () => fetchSurahDetails(surahNo),
+    queryKey: ["surah", surahNo, language],
+    queryFn: () => fetchSurahDetails(surahNo, language),
     enabled: !!surahNo,
   });
 };
