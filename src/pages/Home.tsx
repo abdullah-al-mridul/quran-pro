@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 
 export default function QuranPlayer() {
   const { data: surahs, isLoading } = useSurahs();
-  console.log(surahs);
+  // console.log(surahs);
+
+  const randomIndex = surahs ? Math.floor(Math.random() * surahs.length) : 0;
   const popularSurahs = surahs
     ? [
         surahs.find((s) => s.surahNo === 1),
@@ -33,12 +35,12 @@ export default function QuranPlayer() {
             Featured Recitation
           </span>
           <h1 className="text-5xl font-bold text-white mb-3 tracking-tighter">
-            Mishary Al-Afasy
+            {surahs && surahs[randomIndex].surahName}
           </h1>
           <h2 className="text-2xl text-accent-gold/80 mb-8 font-light italic">
-            Surah Ar-Rahman{" "}
+            {surahs && surahs[randomIndex].surahNameTranslation}{" "}
             <span className="font-arabic not-italic text-2xl ml-4">
-              سورة الرحمن
+              {surahs && surahs[randomIndex].surahNameArabic}
             </span>
           </h2>
           <p className="max-w-lg text-slate-400 text-sm mb-10 leading-relaxed font-light">
