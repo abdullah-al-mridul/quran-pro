@@ -1,0 +1,40 @@
+{
+  "placeholderImages": [
+    {
+      "id": "album-art-1",
+      "description": "Abstract colorful waves",
+      "imageUrl": "https://images.unsplash.com/photo-1770320606236-de6a570af76b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMG11c2ljfGVufDB8fHx8MTc3MTU1MDcxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract music"
+    },
+    {
+      "id": "album-art-2",
+      "description": "A vibrant and energetic geometric pattern",
+      "imageUrl": "https://images.unsplash.com/photo-1718972766557-8c38a0bcb96f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx2aWJyYW50JTIwY29sb3JzfGVufDB8fHx8MTc3MTY2Mzc2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "vibrant colors"
+    },
+    {
+      "id": "album-art-3",
+      "description": "A serene landscape with a cool color palette",
+      "imageUrl": "https://images.unsplash.com/photo-1636893580433-5ac59809bb13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzZXJlbmUlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzcxNjYzNzY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "serene landscape"
+    },
+    {
+      "id": "album-art-4",
+      "description": "A minimalist black and white photograph of a city",
+      "imageUrl": "https://images.unsplash.com/photo-1618981307992-5d00852fa1d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtaW5pbWFsaXN0JTIwY2l0eXxlbnwwfHx8fDE3NzE2NjM3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "minimalist city"
+    },
+    {
+      "id": "album-art-5",
+      "description": "Retro-style illustration with a warm and nostalgic feel",
+      "imageUrl": "https://images.unsplash.com/photo-1770983438747-f81ca8eb1420?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyZXRybyUyMGlsbHVzdHJhdGlvbnxlbnwwfHx8fDE3NzE2NjM3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "retro illustration"
+    },
+    {
+      "id": "album-art-6",
+      "description": "Futuristic digital art with neon lights",
+      "imageUrl": "https://images.unsplash.com/photo-1650874347114-43d57f7ba9ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZnV0dXJpc3RpYyUyMG5lb258ZW58MHx8fHwxNzcxNjYzNzcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic neon"
+    }
+  ]
+}

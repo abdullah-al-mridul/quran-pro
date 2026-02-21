@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 274 100% 95%;
+    --foreground: 262 30% 8%;
+    --card: 274 100% 100%;
+    --card-foreground: 262 30% 8%;
+    --popover: 274 100% 100%;
+    --popover-foreground: 262 30% 8%;
+    --primary: 152 25% 24%;
+    --primary-dark: 152 25% 17%;
+    --accent-gold: 43 50% 56%;
+    --background-dark: 170 13% 6%;
+    --surface-dark: 170 14% 12%;
+    --surface-darker: 168 15% 8%;
+    --border-muted: 153 18% 16%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 153 18% 16%;
+    --input: 153 18% 16%;
+    --ring: 43 50% 56%;
+    --radius: 0rem;
+  }
+  .dark {
+    --background: 170 13% 6%;
+    --foreground: 210 40% 96%;
+    --card: 170 14% 12%;
+    --card-foreground: 210 40% 96%;
+    --popover: 170 13% 6%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 152 25% 24%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 43 50% 56%;
+    --accent-foreground: 152 25% 10%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 153 18% 16%;
+    --input: 153 18% 16%;
+    --ring: 43 50% 56%;
+    --sidebar-background: 168 15% 8%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-border: 153 18% 16%;
+    --sidebar-accent: 170 14% 12%;
+    --sidebar-accent-foreground: 210 40% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-background/50 backdrop-blur-lg;
+  }
+  .bg-islamic-pattern {
+    background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%232D4B3E\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.41L1.41 0h1.41L0 2.83V1.41zm40 37.18l-2.83 2.83h-1.41L40 37.18v1.41zM40 1.41V0h-1.41L40 1.41zM20 20l2.83-2.83 1.41 1.41L21.41 21.41 20 20z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0D1110; 
+}
+::-webkit-scrollbar-thumb {
+  background: #2D4B3E; 
+}
+.neo-border {
+  border: 1px solid theme('colors.border-muted');
+}
+.neo-card {
+  background: theme('colors.surface-dark');
+  border: 1px solid theme('colors.border-muted');
+}
+input[type=range] {
+  -webkit-appearance: none; 
+  background: transparent; 
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 0;
+  background: theme('colors.accent-gold');
+  cursor: pointer;
+  margin-top: -5px; 
+  box-shadow: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: theme('colors.border-muted');
+}
